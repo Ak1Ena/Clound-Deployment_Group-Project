@@ -3,6 +3,7 @@
 ## Deployment Plan
 
 Environtment : NodeJS + Docker + Github Action
+
 Container Registry: Docker hub(akiena/clound-deploy)
 
 ### Deployment flow
