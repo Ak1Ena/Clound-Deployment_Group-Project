@@ -1,0 +1,33 @@
+{
+  "name": "clound-deployment_group-project",
+  "version": "1.0.0",
+  "description": "---\r ## Deployment Plan",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ak1Ena/Clound-Deployment_Group-Project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ak1Ena/Clound-Deployment_Group-Project/issues"
+  },
+  "homepage": "https://github.com/Ak1Ena/Clound-Deployment_Group-Project#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mongoose": "^8.19.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.6.0",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  }
+}
