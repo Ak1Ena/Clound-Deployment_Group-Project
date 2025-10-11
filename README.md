@@ -60,6 +60,7 @@ Container Registry: Docker hub(akiena/clound-deploy)
 | `loginUser()`         | เข้าสู่ระบบ                                      |
 | `createRequestQueue()`       | ทำการส่งขอ queue ใหม่ไปในระบบ                               |
 | `updateQueueStatus()` | อัปเดตสถานะคิว (เช่น กำลังให้บริการ / เสร็จสิ้น) |
+| `getQueue()` | ทำการเรียก queue โดยใช้ userid |
 
 ---
 
@@ -68,7 +69,7 @@ Container Registry: Docker hub(akiena/clound-deploy)
 | Test Id | Function               | Test Description                                    | Input / Condition                                                   | Expected Result                         |
 | ------- | ---------------------- | --------------------------------------------------- | ------------------------------------------------------------------- | --------------------------------------- |
 | T01    | `registerUser()`       | ตรวจสอบว่าผู้ใช้สามารถสมัครสมาชิกด้วย email ถูกต้อง | `{ username: 'john', email: 'john@example.com', password: '1234' }` | Object user ถูกสร้าง, password ถูก hash |
-| T02    | `registerUser()`       | ตรวจสอบว่าฟังก์ชันจะ reject email ผิดรูปแบบ         | `{ username: 'john', email: 'invalid', password: '1234' }`          | Error: "Invalid email"                  |
+| T02    | `getQueue()`       | ตรวจสอบว่าระบบสามารถดึงข้อมูลคิว ผ่าน userid ได้ไหม         | `{ userid: 1}`          | แสดงตัวเลข queue ของ user                  |
 | T03    | `loginUser()`          | ตรวจสอบการเข้าสู่ระบบด้วยรหัสผ่านถูกต้อง            | `{ username/email, password }`                                      | true / login สำเร็จ                     |
 | T04    | `createRequestQueue()` | ตรวจสอบการสร้าง request queue ใหม่                  | `queueList=[{id:1},{id:2}], newRequest={id:3}`                      | newRequest ถูกเพิ่ม, ตำแหน่ง queue = 3  |
 | T05    | `updateQueueStatus()`  | ตรวจสอบว่าเฉพาะ Admin สามารถอัปเดตสถานะ queue       | `userRole='admin', queueId=1, status:'success'`                                       | queue ถูกอัปเดตสำเร็จ                   |
