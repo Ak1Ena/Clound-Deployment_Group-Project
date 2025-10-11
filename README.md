@@ -75,4 +75,18 @@ T05 | Get Current Queue | ระบบต้องสามารถ tracking Qu
 ---
 FROM T04 SET Admin = username : admin, password : admin
 
+### User Id
+```
+    {
+        userid: number (auto-increase)
+    }
+```
+
+### Queue Data
+```
+    {
+        queue: number
+        userid: number
+    }
+```
 
