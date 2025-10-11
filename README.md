@@ -1,5 +1,37 @@
 # Queue Calling
 ---
+## Folder Structure
+```
+
+queue-calling/
+│
+├── dist/
+├── public/
+├── src/
+│   ├── Entity/
+│   ├── Routes/
+|   ├── Controller/
+|   ├── tests/
+│   └── index.ts
+├── package.json
+├── tsconfig.json
+├── Dockerfile
+├── .dockerignore
+└── .github/
+    └── workflows/
+        ├── main.yaml
+        └── deploy.yaml
+```
+---
+## Role Responsible
+
+| Dev         | Responsibility                            | Related Tests |
+| ----------- | ----------------------------------------- | ------------- |
+| Dev 1 | Auth system (Register/Login ) | T01, T02      |
+| Dev 2 | Queue creation & current tracking         | T03, T05      |
+| Dev 3 | Admin update queue       | T04  |
+
+---
 ## Deployment Plan
 
 Environtment : NodeJS + Docker + Github Action
@@ -28,19 +60,21 @@ Container Registry: Docker hub(akiena/clound-deploy)
 | `loginUser()`         | เข้าสู่ระบบ                                      |
 | `createRequestQueue()`       | ทำการส่งขอ queue ใหม่ไปในระบบ                               |
 | `updateQueueStatus()` | อัปเดตสถานะคิว (เช่น กำลังให้บริการ / เสร็จสิ้น) |
-| `getCurrentQueue()`   | ดึงข้อมูลคิวปัจจุบันแบบเรียลไทม์                 |
+| `getQueue()` | ทำการเรียก queue โดยใช้ userid |
 
 ---
 
-## Test Specsification
-Test Id | Features | Test Description | Expected Result|
---- | --- | --- | ---
-T01 | Register API | ตรวจสอบว่าผู้ใช้สามารถลงทะเบียนโดยใช้ username, email, password | 201 CREATED
-T02 | Login API | ตรวจสอบว่าผู้ใช้สามารถที่จะลงชื่อเข้าใช้โดยใช้ username หรือ email และ password ได้ | 200 OK + userid |
-T03 | Request Queue | ตรวจสอบว่าระบบสามารถrequest queue ได้ | 200 OK |
-T04 | Update Queue Status | ตรวจสอบว่าเฉพาะ Admin เท่านั้นที่สามารถเปลี่ยนสถานะคิวได้ | 200 OK
-T05 | Get Current Queue | ระบบต้องสามารถ tracking Queue ที่อยู่ในปัจจุบันได้ | 200 OK + Queue Data
----
+
+
+| Test Id | Function               | Test Description                                    | Input / Condition                                                   | Expected Result                         |
+| ------- | ---------------------- | --------------------------------------------------- | ------------------------------------------------------------------- | --------------------------------------- |
+| T01    | `registerUser(username,email,password)`       | ตรวจสอบว่าผู้ใช้สามารถสมัครสมาชิกด้วย email ถูกต้อง | `{ username: 'john', email: 'john@example.com', password: '1234', role: 'user' }` | Object user ถูกสร้าง, password ถูก hash |
+| T02    | `loginUser(username/email, password)`          | ตรวจสอบการเข้าสู่ระบบด้วยรหัสผ่านถูกต้อง            | `{ username/email, password }`  | true / login สำเร็จ                     | 
+| T03    | `getQueue(userid)`       | ตรวจสอบว่าระบบสามารถดึงข้อมูลคิว ผ่าน userid ได้ไหม         | `{ userid: 1}`          | แสดงตัวเลข queue ของ user พร้อมสถานะ   |             
+| T04    | `updateQueueStatus(role,userid,status)`  | ตรวจสอบว่าเฉพาะ Admin สามารถอัปเดตสถานะ queue       | `role='admin', queueId=1, status:'success'`                                       | queue ถูกอัปเดตสำเร็จ                   |
+| T05    | `createRequestQueue(userid)` | ตรวจสอบการสร้าง request queue ใหม่                  | `queueList=[{id:1, userid:1, status:"success"},{id:2, userid:2,status:"waiting"}], newRequest={id:3, userid:3,status:"wating"}`                      | newRequest ถูกเพิ่ม, ตำแหน่ง queue = 3  |
+
+
 FROM T04 SET Admin = username : admin, password : admin
 
 
