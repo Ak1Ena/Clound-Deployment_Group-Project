@@ -37,7 +37,7 @@ Test Id | Features | Test Description | Expected Result|
 --- | --- | --- | ---
 T01 | Register API | ตรวจสอบว่าผู้ใช้สามารถลงทะเบียนโดยใช้ username, email, password | 201 CREATED
 T02 | Login API | ตรวจสอบว่าผู้ใช้สามารถที่จะลงชื่อเข้าใช้โดยใช้ username หรือ email และ password ได้ | 200 OK + userid |
-T03 | Request Queue | ตรวจสอบว่าระบบสามารถrequest queue ได้ | 200 OK |
+T03 | Request Queue | ตรวจสอบว่าระบบสามารถrequest queue ได้ | 200 OK + Queue Data |
 T04 | Update Queue Status | ตรวจสอบว่าเฉพาะ Admin เท่านั้นที่สามารถเปลี่ยนสถานะคิวได้ | 200 OK
 T05 | Get Current Queue | ระบบต้องสามารถ tracking Queue ที่อยู่ในปัจจุบันได้ | 200 OK + Queue Data
 ---
