@@ -60,33 +60,20 @@ Container Registry: Docker hub(akiena/clound-deploy)
 | `loginUser()`         | เข้าสู่ระบบ                                      |
 | `createRequestQueue()`       | ทำการส่งขอ queue ใหม่ไปในระบบ                               |
 | `updateQueueStatus()` | อัปเดตสถานะคิว (เช่น กำลังให้บริการ / เสร็จสิ้น) |
-| `getCurrentQueue()`   | ดึงข้อมูลคิวปัจจุบันแบบเรียลไทม์                 |
 
 ---
 
-## Test Specsification
-Test Id | Features | Test Description | Expected Result|
---- | --- | --- | ---
-T01 | Register API | ตรวจสอบว่าผู้ใช้สามารถลงทะเบียนโดยใช้ username, email, password | 201 CREATED
-T02 | Login API | ตรวจสอบว่าผู้ใช้สามารถที่จะลงชื่อเข้าใช้โดยใช้ username หรือ email และ password ได้ | 200 OK + userid |
-T03 | Request Queue | ตรวจสอบว่าระบบสามารถrequest queue ได้ | 200 OK |
-T04 | Update Queue Status | ตรวจสอบว่าเฉพาะ Admin เท่านั้นที่สามารถเปลี่ยนสถานะคิวได้ | 200 OK
-T05 | Get Current Queue | ระบบต้องสามารถ tracking Queue ที่อยู่ในปัจจุบันได้ | 200 OK + Queue Data
----
+
+
+| Test Id | Function               | Test Description                                    | Input / Condition                                                   | Expected Result                         |
+| ------- | ---------------------- | --------------------------------------------------- | ------------------------------------------------------------------- | --------------------------------------- |
+| T01    | `registerUser()`       | ตรวจสอบว่าผู้ใช้สามารถสมัครสมาชิกด้วย email ถูกต้อง | `{ username: 'john', email: 'john@example.com', password: '1234' }` | Object user ถูกสร้าง, password ถูก hash |
+| T02    | `registerUser()`       | ตรวจสอบว่าฟังก์ชันจะ reject email ผิดรูปแบบ         | `{ username: 'john', email: 'invalid', password: '1234' }`          | Error: "Invalid email"                  |
+| T03    | `loginUser()`          | ตรวจสอบการเข้าสู่ระบบด้วยรหัสผ่านถูกต้อง            | `{ username/email, password }`                                      | true / login สำเร็จ                     |
+| T04    | `createRequestQueue()` | ตรวจสอบการสร้าง request queue ใหม่                  | `queueList=[{id:1},{id:2}], newRequest={id:3}`                      | newRequest ถูกเพิ่ม, ตำแหน่ง queue = 3  |
+| T05    | `updateQueueStatus()`  | ตรวจสอบว่าเฉพาะ Admin สามารถอัปเดตสถานะ queue       | `userRole='admin', queueId=1, status:'success'`                                       | queue ถูกอัปเดตสำเร็จ                   |
+
+
 FROM T04 SET Admin = username : admin, password : admin
 
-### User Id
-```
-    {
-        userid: number (auto-increase)
-    }
-```
-
-### Queue Data
-```
-    {
-        queue: number
-        userid: number
-    }
-```
 
