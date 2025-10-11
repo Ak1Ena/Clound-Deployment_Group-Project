@@ -1,5 +1,26 @@
 # Queue Calling
 ---
+## Folder Structure
+queue-calling/
+│
+├── dist/
+├── public/
+├── src/
+│   ├── Entity/
+│   ├── Routes/
+|   ├── Controller/
+│   └── index.ts
+├── tests/
+├── package.json
+├── tsconfig.json
+├── Dockerfile
+├── .dockerignore
+└── .github/
+    └── workflows/
+        ├── main.yaml
+        └── deploy.yaml
+
+---
 ## Deployment Plan
 
 Environtment : NodeJS + Docker + Github Action
