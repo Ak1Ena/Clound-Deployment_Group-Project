@@ -23,6 +23,15 @@ queue-calling/
         └── deploy.yaml
 ```
 ---
+## Role Responsible
+
+| Dev         | Responsibility                            | Related Tests |
+| ----------- | ----------------------------------------- | ------------- |
+| Dev 1 | Auth system (Register/Login + Role check) | T01, T02      |
+| Dev 2 | Queue creation & current tracking         | T03, T05      |
+| Dev 3 | Admin update queue       | T04  |
+
+---
 ## Deployment Plan
 
 Environtment : NodeJS + Docker + Github Action
