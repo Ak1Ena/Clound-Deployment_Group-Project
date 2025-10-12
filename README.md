@@ -39,7 +39,7 @@ Environtment : NodeJS + Docker + Github Action
 Container Registry: Docker hub(akiena/clound-deploy)
 
 ### Deployment flow
-1. Dev push code --> Github action trigger main.yaml workflow.
+1. Dev push code to branch dev or pull request to branch main --> Github action trigger main.yaml workflow for testing.
 2. install dependencies
 3. run unit test
 4. Release version code --> Github action trigger deploy.yaml workflow.
