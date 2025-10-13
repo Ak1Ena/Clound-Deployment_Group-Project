@@ -1,7 +1,8 @@
-export default interface User {
+export type QueueStatus = 'waiting' | 'serving' | 'success' | 'skipped';
+
+export default interface Queue {
   id: number;
-  username: string;
-  email: string;
-  password: string;
-  role: 'user' | 'admin';
+  userid: number;
+  status: QueueStatus;
+  createdAt: string;
 }
