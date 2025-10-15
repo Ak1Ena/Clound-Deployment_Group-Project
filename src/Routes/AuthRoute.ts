@@ -1,25 +1,60 @@
-import { Router, Request, Response } from 'express';
-import { AuthController } from '../Controller/AuthController';
+import User, { Role } from '../Entity/User';
+import { users } from '../Database/Data';
 
-const router = Router();
+const hashPassword = (password: string) => `hashed-${password}`;
 
-router.post('/register', (req: Request, res: Response) => {
-  const { username, email, password, role } = req.body;
-  const result = AuthController.registerUser({ username, email, password, role });
+let userIdCounter = 1;
 
-  if (result.success)
-    res.status(201).json({ message: 'User registered successfully', user: result.user });
-  else
-    res.status(400).json({ message: result.message });
-});
+export class AuthController {
+  // ✅ สมัครสมาชิกใหม่
+  static registerUser({
+    username,
+    password,
+    role,
+  }: {
+    username: string;
+    password: string;
+    role?: Role;
+  }) {
+    if (!username || !password)
+      return { success: false, message: 'Missing username or password' };
 
-router.post('/login', (req: Request, res: Response) => {
-  const { usernameOrEmail, password } = req.body;
-  const result = AuthController.loginUser({ usernameOrEmail, password });
-  if (result.success)
-    res.status(200).json({ message: 'Login successful', userId: result.userId, name: result.name });
-  else
-    res.status(401).json({message: 'Invalid credentials'} );
-});
+    const existingUser = users.find((u) => u.name === username);
+    if (existingUser)
+      return { success: false, message: 'User already exists' };
 
-export default router;
+    const newUser: User = {
+      id: String(userIdCounter++),
+      name: username,
+      password: hashPassword(password),
+      role: role || 'user',
+    };
+
+    users.push(newUser);
+
+    return {
+      success: true,
+      user: { id: newUser.id, name: newUser.name, role: newUser.role },
+    };
+  }
+
+  // ✅ เข้าสู่ระบบ (username, password)
+  static loginUser({
+    username,
+    password,
+  }: {
+    username: string;
+    password: string;
+  }) {
+    const user = users.find((u) => u.name === username);
+    if (!user || user.password !== hashPassword(password))
+      return { success: false, message: 'Invalid credentials' };
+
+    return {
+      success: true,
+      userId: user.id,
+      name: user.name,
+      role: user.role,
+    };
+  }
+}
