@@ -6,3 +6,4 @@ export default interface User {
     password: string;
     role: Role;
 }
+// push
