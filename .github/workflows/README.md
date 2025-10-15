@@ -15,9 +15,10 @@ This repository uses GitHub Actions for Continuous Integration and Continuous De
 2. Setup Node.js environment
 3. Install dependencies (`npm ci`)
 4. Build TypeScript code (`npm run build`)
-5. Run Auth tests (`npm run test:auth`)
-6. Run Queue tests (`npm run test:queue`)
-7. Run all tests (`npm test`)
+5. **Verify dist folder exists** - Ensures build was successful
+6. Run Auth tests (`npm run test:auth`)
+7. Run Queue tests (`npm run test:queue`)
+8. Run all tests (`npm test`)
 
 **Purpose:** Ensures code quality by running automated tests before merging.
 
@@ -31,9 +32,11 @@ This repository uses GitHub Actions for Continuous Integration and Continuous De
 1. Checkout code
 2. Setup Docker Buildx
 3. Login to Docker Hub
-4. Extract version from tag
-5. Build Docker image
-6. Push to Docker Hub as:
+4. Setup Node.js environment
+5. **Test build locally** - Verify TypeScript compiles and dist folder is created
+6. Extract version from tag
+7. Build Docker image (multi-stage build)
+8. Push to Docker Hub as:
    - `akiena/clound-deploy:latest`
    - `akiena/clound-deploy:<version>`
 

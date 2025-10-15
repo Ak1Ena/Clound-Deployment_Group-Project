@@ -32,6 +32,15 @@ jobs:
     - name: Run TypeScript build
       run: npm run build
     
+    - name: Check dist folder exists
+      run: |
+        if [ ! -d "dist" ]; then
+          echo "Error: dist folder not found after build!"
+          exit 1
+        fi
+        echo "dist folder created successfully"
+        ls -la dist/
+    
     - name: Run Auth tests
       run: npm run test:auth
       continue-on-error: false
