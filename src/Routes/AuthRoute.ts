@@ -19,7 +19,7 @@ router.post('/login', (req: Request, res: Response) => {
   if (result.success)
     res.status(200).json({ message: 'Login successful', userId: result.userId, name: result.name });
   else
-    res.status(401).json('Invalid credentials' );
+    res.status(401).json({message: 'Invalid credentials'} );
 });
 
 export default router;
