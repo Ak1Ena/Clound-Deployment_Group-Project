@@ -6,7 +6,8 @@ export const users: User[] = [
   {
     id: '1',
     name: 'admin',
-    password: 'hashed-admin', // ใช้ hash เดียวกับ AuthController
+    password: 'hashed-admin',
+    email: 'admin@example.com',
     role: 'admin'
   }
 ]
