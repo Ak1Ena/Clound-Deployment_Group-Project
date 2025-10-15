@@ -1,21 +1,27 @@
-import express from 'express'
-import bodyParser from 'body-parser'
-import path from 'path'
+import express from 'express';
+import bodyParser from 'body-parser';
+import path from 'path';
 
-import authRoute from './Routes/AuthRoute'
-import queueRoute from './Routes/QueueRoute'
-import adminRoute from './Routes/AdminRoute'
+import authRoute from './Routes/AuthRoute';
+import queueRoute from './Routes/QueueRoute';
+import adminRoute from './Routes/AdminRoute';
 
-const app = express()
-const PORT = process.env.PORT || 3000
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-app.use(bodyParser.json())
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json());
 
-app.use('/api', authRoute)
-app.use('/api', queueRoute)
-app.use('/api', adminRoute)
+app.use(express.static(path.join(__dirname, '../public')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public', 'index.html'));
+});
+
+app.use('/api', authRoute);
+app.use('/api', queueRoute);
+app.use('/api', adminRoute);
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`)
-})
+  console.log(`Server is running on port ${PORT}`);
+  console.log(`Static path: ${path.join(__dirname, '../public')}`);
+});
