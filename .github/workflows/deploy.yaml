@@ -1,0 +1,56 @@
+name: CD - Deploy to Docker Hub
+
+on:
+  release:
+    types: [published]
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+    
+    - name: Extract version from tag
+      id: extract_version
+      run: |
+        if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+          VERSION=${GITHUB_REF#refs/tags/}
+        else
+          VERSION=${GITHUB_SHA::8}
+        fi
+        echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+        echo "Version: $VERSION"
+    
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: |
+          akiena/clound-deploy:latest
+          akiena/clound-deploy:${{ steps.extract_version.outputs.VERSION }}
+        cache-from: type=registry,ref=akiena/clound-deploy:buildcache
+        cache-to: type=registry,ref=akiena/clound-deploy:buildcache,mode=max
+    
+    - name: Deployment Summary
+      run: |
+        echo "Deployment completed successfully!"
+        echo "Docker Image: akiena/clound-deploy:${{ steps.extract_version.outputs.VERSION }}"
+        echo "Also tagged as: akiena/clound-deploy:latest"
+        echo "Commit: ${{ github.sha }}"
+

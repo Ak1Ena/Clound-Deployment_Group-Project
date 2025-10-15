@@ -4,7 +4,10 @@
   "description": "---\r ## Deployment Plan",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run test:auth && npm run test:queue",
+    "test:auth": "npx ts-node src/Test/AuthTest.ts",
+    "test:queue": "npx ts-node src/Test/Queue.ts",
+    "build": "tsc",
     "start": "node ./dist/src/index.js"
   },
   "repository": {
