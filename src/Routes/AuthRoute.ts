@@ -1,25 +1,38 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
 import { AuthController } from '../Controller/AuthController';
 
 const router = Router();
 
-router.post('/register', (req: Request, res: Response) => {
-  const { username, email, password, role } = req.body;
-  const result = AuthController.registerUser({ username, email, password, role });
+/**
+ * @route POST /api/register
+ * @desc สมัครสมาชิกใหม่ (username, password, role)
+ */
+router.post('/register', (req, res) => {
+  const { username, password, role } = req.body;
 
-  if (result.success)
-    res.status(201).json({ message: 'User registered successfully', user: result.user });
-  else
-    res.status(400).json({ message: result.message });
+  // ตรวจสอบ input
+  if (!username || !password) {
+    return res.status(400).json({ success: false, message: 'Missing username or password' });
+  }
+
+  const result = AuthController.registerUser({ username, password, role });
+  res.status(result.success ? 201 : 400).json(result);
 });
 
-router.post('/login', (req: Request, res: Response) => {
-  const { usernameOrEmail, password } = req.body;
-  const result = AuthController.loginUser({ usernameOrEmail, password });
-  if (result.success)
-    res.status(200).json({ message: 'Login successful', userId: result.userId, name: result.name });
-  else
-    res.status(401).json('Invalid credentials' );
+/**
+ * @route POST /api/login
+ * @desc เข้าสู่ระบบ (username, password)
+ */
+router.post('/login', (req, res) => {
+  const { username, password } = req.body;
+
+  // ตรวจสอบ input
+  if (!username || !password) {
+    return res.status(400).json({ success: false, message: 'Missing username or password' });
+  }
+
+  const result = AuthController.loginUser({ username, password });
+  res.status(result.success ? 200 : 401).json(result);
 });
 
 export default router;
