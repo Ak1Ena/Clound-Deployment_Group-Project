@@ -24,6 +24,23 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
     
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18.x
+        cache: 'npm'
+    
+    - name: Test build locally
+      run: |
+        npm ci
+        npm run build
+        if [ ! -d "dist" ]; then
+          echo "Error: dist folder not found after build!"
+          exit 1
+        fi
+        echo "Build test passed - dist folder created"
+        ls -la dist/
+    
     - name: Extract version from tag
       id: extract_version
       run: |
